@@ -1,4 +1,7 @@
+import datetime
 import streamlit as st
+import requests
+
 
 # Styling
 st.markdown("""<style>
@@ -19,21 +22,42 @@ st.markdown("""<style>
         -webkit-background-clip: initial !important;
         background-clip: initial !important;
         -webkit-text-fill-color: initial !important;
-        color: #ffffff !important;   /* sau orice culoare vrei */
+        color: #ffffff !important;
         font-size: 42px;
     }
     """, unsafe_allow_html=True)
-#  End styling
 
 st.html(
     "<h1 class='title-gradient'>Space Insights <span class='icon-title'>🌠</span></h1>"
     "<br><br>"
 )
 
-st.markdown(
-    """
-    Welcome to Space Insights! This application provides you with the latest information about space missions, 
-    celestial events, and astronomical discoveries. Explore the wonders of the universe with us!
-    """,
-    unsafe_allow_html=True
+today = datetime.date.today()
+
+selected_date = st.date_input(
+    "Select a date to view the Astronomy Picture of the Day (APOD):",
+    value=today,
+    max_value=today,
+    min_value=datetime.date(1995, 6, 16)
 )
+
+API_KEY = "DEMO_KEY" 
+API_url = f"https://api.nasa.gov/planetary/apod?api_key={API_KEY}&date={selected_date}"
+
+response = requests.get(API_url)
+
+if response.status_code == 200:
+    data = response.json()
+    st.subheader(data['title'])
+    st.image(data['url'])
+    st.markdown(f"**Date:** {data['date']}")
+    st.markdown(f"**Explanation:** {data['explanation']}")
+    st.markdown(f"**Copyright:** {data.get('copyright', 'N/A')}")
+elif response.status_code == 404:
+    st.warning("No data available for the selected date. Please choose another date.")
+elif response.status_code == 429:
+    st.warning("Too many requests. Please try again later.")
+elif response.status_code == 500:
+    st.error("Internal server error.")
+else:
+    st.error(f"Error fetching data: {response.status_code}")
