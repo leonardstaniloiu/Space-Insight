@@ -7,7 +7,7 @@ Interactive Streamlit web application integrating NASA’s Astronomy Picture of 
 1. Clone the repository:
 ```bash
 git clone https://github.com/leonardstaniloiu/Space-Insight.git
-cd proteinvisualizer
+cd Space-Insight
 ```
 
 2. Install dependencies ( TBD ) :
