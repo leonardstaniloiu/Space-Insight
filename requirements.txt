@@ -1,0 +1,7 @@
+streamlit
+requests
+datetime
+json
+urllib.reques
+pandas
+pydeck
