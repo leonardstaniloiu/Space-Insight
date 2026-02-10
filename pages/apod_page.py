@@ -41,7 +41,7 @@ selected_date = st.date_input(
     min_value=datetime.date(1995, 6, 16)
 )
 
-API_KEY = "DEMO_KEY" 
+API_KEY = st.secrets["API_KEY_NASA"] # Demo key: "DEMO_KEY" // Get your own key at https://api.nasa.gov/
 API_url = f"https://api.nasa.gov/planetary/apod?api_key={API_KEY}&date={selected_date}"
 
 response = requests.get(API_url)
